@@ -43,13 +43,14 @@ class CardExecutor(CommonFields):
     card = models.ForeignKey(
         Card,
         on_delete=models.SET_NULL,
+        related_name='executors',
         verbose_name='Связь с карточкой',
         null=True, blank=True
     )
     executor = models.ForeignKey(
         User,
         on_delete=models.SET_NULL,
-        related_name='card_executors',
+        related_name='cards',
         verbose_name='Исполнитель',
         null=True, blank=True
     )
