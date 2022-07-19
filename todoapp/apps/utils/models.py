@@ -25,6 +25,7 @@ class CommonFields(models.Model):
     created_by_user = models.ForeignKey(
         User,
         on_delete=models.SET_NULL,
+        related_name='created_%(class)ss',
         verbose_name='Создатель',
         null=True, blank=True
     )
@@ -37,6 +38,7 @@ class CommonFields(models.Model):
     updated_by_user = models.ForeignKey(
         User,
         on_delete=models.SET_NULL,
+        related_name='updated_%(class)ss',
         verbose_name='Кто обновил запись',
         null=True, blank=True
     )

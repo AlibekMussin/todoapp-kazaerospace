@@ -1,29 +1,55 @@
+# Vendor
 from django.db import models
 
-# Create your models here.
-# class CardList(CommonFields):
-#     class Meta:
-#         verbose_name = 'Данные внешнего адресата'
-#         verbose_name_plural = 'Данные внешних адресатов'
-#
-#     applicant_status = models.ForeignKey(
-#         ApplicantStatus,
-#         on_delete=models.DO_NOTHING,
-#         verbose_name='Статус обратившегося лица',
-#         null=True, blank=True,
-#     )
-#     delivery_methods = models.ManyToManyField(
-#         DeliveryMethod,
-#         verbose_name='Способы доставки',
-#         blank=True,
-#     )
-#     is_resident = models.BooleanField(
-#         default=True,
-#         verbose_name='Является резидентом',
-#     )
-#     author_type = models.CharField(
-#         choices=AuthorTypeChoices.choices,
-#         verbose_name='Тип автора письма',
-#         null=True, blank=True,
-#         max_length=50
-#     )
+# Local
+from todoapp.apps.utils.models import CommonFields
+from django.contrib.auth.models import User
+
+
+class CardStatus(models.TextChoices):
+    LATER = 'LATER', 'Отложена'
+    DOING = 'DOING', 'В работе'
+    DONE = 'DONE', 'Исполнена'
+
+
+class Card(CommonFields):
+    class Meta:
+        verbose_name = 'Задача'
+        verbose_name_plural = 'Список задач'
+
+    subject = models.CharField(
+        max_length=255,
+        verbose_name='Краткое описание задачи'
+    )
+    description = models.TextField(
+        verbose_name='полное описание задачи',
+        null=True, blank=True
+    )
+    status = models.CharField(
+        choices=CardStatus.choices,
+        max_length=100,
+        verbose_name='Статус задачи',
+        default=CardStatus.LATER
+    )
+
+
+# Было принято решение отделить исполнителя от карточки на случай,
+# если в будущем понадобится чтобы у карточки было несколько исполнителей
+class CardExecutor(CommonFields):
+    class Meta:
+        verbose_name = 'Исполнитель задачи'
+        verbose_name_plural = 'Исполнители задач'
+
+    card = models.ForeignKey(
+        Card,
+        on_delete=models.SET_NULL,
+        verbose_name='Связь с карточкой',
+        null=True, blank=True
+    )
+    executor = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        related_name='card_executors',
+        verbose_name='Исполнитель',
+        null=True, blank=True
+    )
