@@ -2,7 +2,8 @@
 from rest_framework.serializers import ModelSerializer
 
 # Local
-from models import Card, CardExecutor
+from todoapp.apps.cardlist.models import Card, CardExecutor
+
 
 # seralizers for card executors
 class CardExecutorCreateSerializer(ModelSerializer):
@@ -68,7 +69,8 @@ class CardListSerializer(ModelSerializer):
             'id',
             'subject',
             'description',
-            'status'
+            'status',
+            'created_by_user'
         ]
 
 
@@ -79,7 +81,8 @@ class CardGetSerializer(ModelSerializer):
             'id',
             'subject',
             'description',
-            'status'
+            'status',
+            'created_by_user'
         ]
 
 
@@ -90,5 +93,6 @@ class CardUpdateSerializer(ModelSerializer):
             'id',
             'subject',
             'description',
-            'status'
+            'status',
+            'updated_by_user'
         ]

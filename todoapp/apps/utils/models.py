@@ -54,6 +54,13 @@ class CommonFields(models.Model):
         editable=False,
         db_index=True
     )
+    deleted_by_user = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        related_name='deleted_%(class)ss',
+        verbose_name='Кто удалил запись',
+        null=True, blank=True
+    )
     deleted_at = models.DateTimeField(
         verbose_name='Когда удалена запись',
         editable=False,

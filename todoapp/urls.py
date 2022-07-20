@@ -9,7 +9,7 @@ router = routers.DefaultRouter()
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
-    path('', include(router.urls)),
-    path('auth/', include('rest_framework.urls', namespace='rest_framework')),
-    path('admin/', admin.site.urls),
+    path('api/v1/admin/', admin.site.urls),
+    path('api/v1/cardlist/', include('todoapp.apps.cardlist.urls')),
+    path('api/v1/user/', include('todoapp.apps.user.urls')),
 ]
