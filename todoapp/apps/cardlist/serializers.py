@@ -3,27 +3,28 @@ from rest_framework.serializers import ModelSerializer
 
 # Local
 from todoapp.apps.cardlist.models import Card, CardExecutor
-
+from todoapp.apps.user.serializers import UserGetSerializer
 
 # seralizers for card executors
 class CardExecutorCreateSerializer(ModelSerializer):
+
     class Meta:
         model = CardExecutor
         fields = [
-            'subject',
-            'description',
-            'status'
+            'card',
+            'executor',
         ]
 
 
 class CardExecutorListSerializer(ModelSerializer):
+    executor = UserGetSerializer(read_only=True)
+
     class Meta:
         model = CardExecutor
         fields = [
             'id',
-            'subject',
-            'description',
-            'status'
+            'card',
+            'executor',
         ]
 
 
@@ -32,9 +33,8 @@ class CardExecutorGetSerializer(ModelSerializer):
         model = CardExecutor
         fields = [
             'id',
-            'subject',
-            'description',
-            'status'
+            'card',
+            'executor',
         ]
 
 
@@ -43,9 +43,8 @@ class CardExecutorUpdateSerializer(ModelSerializer):
         model = CardExecutor
         fields = [
             'id',
-            'subject',
-            'description',
-            'status'
+            'card',
+            'executor',
         ]
 
 
@@ -63,6 +62,8 @@ class CardCreateSerializer(ModelSerializer):
 
 
 class CardListSerializer(ModelSerializer):
+    executors = CardExecutorListSerializer(many=True, read_only=True)
+
     class Meta:
         model = Card
         fields = [
@@ -70,7 +71,8 @@ class CardListSerializer(ModelSerializer):
             'subject',
             'description',
             'status',
-            'created_by_user'
+            'created_by_user',
+            'executors'
         ]
 
 

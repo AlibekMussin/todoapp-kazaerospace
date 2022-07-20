@@ -18,5 +18,16 @@ class LoginSerializer(serializers.Serializer):
         required=True
     )
 
+
 class VerifySerializer(serializers.Serializer):
     token = serializers.CharField(max_length=4000, required=True)
+
+
+class UserGetSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = [
+            'id',
+            'username',
+            'email',
+        ]

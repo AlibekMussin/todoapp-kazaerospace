@@ -13,9 +13,11 @@ from django.contrib.auth.backends import ModelBackend
 # Local
 from todoapp.apps.user import utils as user_utils
 
+
 class DisableCSRF(MiddlewareMixin):
     def process_request(self, request):
         setattr(request, '_dont_enforce_csrf_checks', True)
+
 
 class AuthenticationMiddleware(MiddlewareMixin):
     def get_auth_header(self, request):

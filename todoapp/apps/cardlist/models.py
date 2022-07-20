@@ -16,6 +16,7 @@ class Card(CommonFields):
     class Meta:
         verbose_name = 'Задача'
         verbose_name_plural = 'Список задач'
+        ordering = ['-id']
 
     subject = models.CharField(
         max_length=255,
@@ -39,6 +40,7 @@ class CardExecutor(CommonFields):
     class Meta:
         verbose_name = 'Исполнитель задачи'
         verbose_name_plural = 'Исполнители задач'
+        ordering = ['-id']
 
     card = models.ForeignKey(
         Card,
