@@ -57,6 +57,14 @@ class CardExecutor(CommonFields):
         null=True, blank=True
     )
 
+    def __str__(self):
+        user_name = "Нет исполнителя"
+        if self.executor:
+            user_name = self.executor.username
+            if self.executor.last_name:
+                user_name = "{} {}".format(self.executor.last_name, self.executor.first_name)
+        return '[{}] - {}'.format(self.card.id, user_name)
+
 
 # Уведомления на таски, может быть много
 class CardNotification(CommonFields):
@@ -83,4 +91,8 @@ class CardNotification(CommonFields):
         verbose_name='Когда прочитано уведомление',
         editable=False,
         null=True, blank=True
+    )
+    is_sent = models.BooleanField(
+        default=False,
+        verbose_name='Отправлено ли исполнителю'
     )

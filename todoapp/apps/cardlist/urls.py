@@ -9,7 +9,8 @@ urlpatterns = [
     ), name='card'),
     path('card/<int:pk>/', views.CardViewSet.as_view({
             'get': 'retrieve',
-            'put': 'partial_update'
+            'put': 'partial_update',
+            'delete': 'destroy'
          }),
          name='card'),
     path('card_admin/', views.CardAdminViewSet.as_view(

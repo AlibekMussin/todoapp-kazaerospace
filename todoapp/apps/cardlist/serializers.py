@@ -1,22 +1,26 @@
 # Vendor
-from rest_framework.serializers import ModelSerializer
+from django.db.transaction import atomic
+from django.contrib.auth.models import User
+from rest_framework import serializers
 
 # Local
 from todoapp.apps.cardlist.models import Card, CardExecutor
 from todoapp.apps.user.serializers import UserGetSerializer
 
+
 # seralizers for card executors
-class CardExecutorCreateSerializer(ModelSerializer):
+class CardExecutorCreateSerializer(serializers.ModelSerializer):
+    executor = serializers.IntegerField()
 
     class Meta:
         model = CardExecutor
         fields = [
-            'card',
             'executor',
         ]
 
 
-class CardExecutorListSerializer(ModelSerializer):
+
+class CardExecutorListSerializer(serializers.ModelSerializer):
     executor = UserGetSerializer(read_only=True)
 
     class Meta:
@@ -28,7 +32,7 @@ class CardExecutorListSerializer(ModelSerializer):
         ]
 
 
-class CardExecutorGetSerializer(ModelSerializer):
+class CardExecutorGetSerializer(serializers.ModelSerializer):
     class Meta:
         model = CardExecutor
         fields = [
@@ -38,7 +42,7 @@ class CardExecutorGetSerializer(ModelSerializer):
         ]
 
 
-class CardExecutorUpdateSerializer(ModelSerializer):
+class CardExecutorUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = CardExecutor
         fields = [
@@ -49,8 +53,7 @@ class CardExecutorUpdateSerializer(ModelSerializer):
 
 
 # seralizers for cards
-class CardCreateSerializer(ModelSerializer):
-    executors = CardExecutorCreateSerializer()
+class CardCreateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Card
@@ -60,8 +63,16 @@ class CardCreateSerializer(ModelSerializer):
             'status'
         ]
 
+    def create(self, validated_data, *args, **kwargs):
+        with atomic():
+            request = self.context['request']
+            validated_data['created_by_user'] = request.user
+            card = super().create(validated_data, *args, **kwargs)
+            print("card:{}".format(card))
+            return card
 
-class CardListSerializer(ModelSerializer):
+
+class CardListSerializer(serializers.ModelSerializer):
     executors = CardExecutorListSerializer(many=True, read_only=True)
 
     class Meta:
@@ -72,11 +83,12 @@ class CardListSerializer(ModelSerializer):
             'description',
             'status',
             'created_by_user',
+            'updated_by_user',
             'executors'
         ]
 
 
-class CardGetSerializer(ModelSerializer):
+class CardGetSerializer(serializers.ModelSerializer):
     class Meta:
         model = Card
         fields = [
@@ -88,7 +100,7 @@ class CardGetSerializer(ModelSerializer):
         ]
 
 
-class CardUpdateSerializer(ModelSerializer):
+class CardUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Card
         fields = [
