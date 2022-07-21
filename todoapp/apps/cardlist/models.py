@@ -56,3 +56,31 @@ class CardExecutor(CommonFields):
         verbose_name='Исполнитель',
         null=True, blank=True
     )
+
+
+# Уведомления на таски, может быть много
+class CardNotification(CommonFields):
+    class Meta:
+        verbose_name = 'Время уведомления по задаче'
+        verbose_name_plural = 'Время уведомления по задаче'
+
+    card_executor = models.ForeignKey(
+        CardExecutor,
+        on_delete=models.SET_NULL,
+        related_name='notifications',
+        verbose_name='Связь с исполнителем',
+        null=True, blank=True
+    )
+    notif_datetime = models.DateTimeField(
+        verbose_name='Дата и время уведомления',
+        null=True, blank=True
+    )
+    is_read = models.BooleanField(
+        default=False,
+        verbose_name='Прочитано ли исполнителем'
+    )
+    read_at = models.DateTimeField(
+        verbose_name='Когда прочитано уведомление',
+        editable=False,
+        null=True, blank=True
+    )

@@ -8,6 +8,8 @@ from todoapp.apps.utils import permissions
 from todoapp.apps.cardlist.models import Card, CardExecutor
 from todoapp.apps.cardlist.serializers import CardGetSerializer, CardListSerializer
 from todoapp.apps.utils import utils as app_utils
+from rest_framework import filters
+
 
 class CardViewSet(viewsets.ModelViewSet):
     """ Вьюшка для карточек с основными операциями """
@@ -46,11 +48,14 @@ class CardAdminViewSet(viewsets.ModelViewSet):
     queryset = Card.objects.all()
     serializer_class = CardListSerializer
     permission_classes = [permissions.IsCardAdmin]
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['subject', 'description', 'status']
 
     def list(self, request, *args, **kwargs):
         """ Получить список всех карточек"""
         user = request.user
         cards = self.queryset
-        data = self.get_serializer(cards, many=True).data
+        qs = self.filter_queryset(cards)
+        data = self.get_serializer(qs, many=True).data
         return Response(data)
 

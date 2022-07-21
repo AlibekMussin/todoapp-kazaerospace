@@ -11,3 +11,4 @@ python-dotenv==0.14.0
 psycopg2
 PyJWT==1.7.1
 requests==2.23.0
+django-filter==2.2.0
