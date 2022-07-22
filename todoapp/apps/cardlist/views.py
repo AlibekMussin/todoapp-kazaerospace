@@ -121,6 +121,13 @@ class CardAdminViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsCardAdmin]
     filter_backends = [filters.SearchFilter]
     search_fields = ['subject', 'description', 'status']
+    filter_fields = ['subject', 'description', 'status']
+
+    # def filter_queryset(self, queryset):
+    #     return PersonGridFilterBase(
+    #         request=self.request,
+    #         queryset=super().filter_queryset(queryset)
+    #     ).get_filtered_queryset()
 
     def list(self, request, *args, **kwargs):
         """ Получить список всех карточек"""
