@@ -7,6 +7,10 @@ from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 from datetime import datetime, timezone
 import jwt
+from django.contrib.auth.models import User
+from .serializers import RegisterSerializer
+from rest_framework import generics
+from rest_framework.permissions import AllowAny
 
 # Local
 from todoapp.apps.user.serializers import LoginSerializer
@@ -51,3 +55,8 @@ class LoginView(GenericViewSet):
             return Response(data={'error_code': 'AUTHENTICATION_FAILED',
                                   "detail": "Неверный логин или пароль"},
                             status=403)
+
+class RegisterView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    permission_classes = (AllowAny,)
+    serializer_class = RegisterSerializer
