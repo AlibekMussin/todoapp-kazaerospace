@@ -8,9 +8,11 @@ setuptools==41.2.0
 sqlparse==0.4.2
 tzdata==2022.1
 python-dotenv==0.14.0
-psycopg2
+psycopg2-binary==2.8.6
+#psycopg2
 PyJWT==1.7.1
 requests==2.23.0
 django-filter==2.2.0
 celery==4.4.6
 redis==3.5.3
+gunicorn==20.0.4
