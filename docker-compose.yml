@@ -3,10 +3,11 @@ version: '3.8'
 services:
   web:
     build: ./
+    command: bash -c "python manage.py migrate && python manage.py autofill_groups"
     volumes:
       - ./app/:/usr/src/todoapp/
     ports:
-      - 8070:8070
+      - 8000:8070
     env_file:
       - ./.env
     container_name: todo-app
