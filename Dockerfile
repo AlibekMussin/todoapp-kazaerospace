@@ -17,4 +17,4 @@ COPY . .
 # create logs directory
 RUN mkdir -p logs
 
-CMD gunicorn -b 0.0.0.0:8070 todoapp.wsgi
+CMD gunicorn -b 0.0.0.0:8000 todoapp.wsgi

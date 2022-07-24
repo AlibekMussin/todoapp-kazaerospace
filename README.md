@@ -1,6 +1,8 @@
 # todoapp-kazaerospace
 Тестовое задание для КазАэро Space
 
+docker run --name todoapp-db -p 4432:5432 -e POSTGRES_USER=todoapp_user -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=todoapp_db -d postgres:13.3
+
 При первом запуске:
  - создать БД в Postgres
  - создать в корне приложения файл .env по образцу файла .env_example 
